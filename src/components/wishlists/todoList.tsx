@@ -26,15 +26,15 @@ interface Todo {
       }
 
     return (
-        <div className="h-svh max-h-[700px] border px-3 py-2 rounded">
-            <form onSubmit={handleSubmit} className="flex gap-2 mt-4">
+        <div className="h-[calc(100vh-150px)] max-h-[700px] bg-white/5 border border-gray-700 px-6 py-4 rounded-lg shadow-md overflow-y-auto">
+            <form onSubmit={handleSubmit} className="flex gap-3 mt-6">
                 <input
-                    className="border px-3 py-2 rounded"
+                    className="flex-1 bg-gray-900 border border-gray-600 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={labelInformation}
                     onChange={e => setLabelInformation(e.target.value)}
                     placeholder="Добавить задачу"
                 />
-                <button className="bg-blue-600 text-white px-4 py-2 rounded" type="submit">
+                <button className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition" type="submit">
                     Добавить
                 </button>
             </form>
