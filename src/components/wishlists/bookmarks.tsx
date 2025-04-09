@@ -17,24 +17,20 @@ const   handleSubmit = (label: string, bookmarkId: number) =>{
 }
 
     return(
-        <div>
-            <ul className="flex space-x-2">
+        <div className="mt-[15px] mx-[40px]">
+            <ul className="flex space-x-0.5">
                 {bookmarks.map((group, index) => (
-                    <div key={index}>
                     <li
-                    
-                    className={`px-10 py-2 rounded-xl cursor-pointer transition 
-                        ${group.id === activeGroup ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}
+                    key={index}
+                    className={`px-[8px]  max-w-[100px] max-h-[35px] py-2 rounded-t-lg cursor-pointer transition whitespace-nowrap
+                        ${group.id === activeGroup ? 'bg-blue-600 text-white shadow-md px-[20px]' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}
                     `}
                     onClick={() => handleSubmit(group.label, group.id)}
                     >
                     {group.label}
                     </li>
-                       
-                        
-                    </div>
                     ))}
-                    <li className={'px-10 py-2 rounded-xl cursor-pointer transition bg-gray-800 text-gray-400 hover:bg-gray-700'}
+                    <li className={'px-[8px]  w-[34px] max-h-[35px] py-2 rounded-t-lg cursor-pointer transition whitespace-nowrap bg-gray-800 text-gray-400 hover:bg-gray-700'}
                     onClick={() => setOpenModal(true)}>
                     +
                     </li>

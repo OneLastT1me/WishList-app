@@ -26,7 +26,7 @@ interface Todo {
       }
 
     return (
-        <div>
+        <div className="h-svh max-h-[700px] border px-3 py-2 rounded">
             <form onSubmit={handleSubmit} className="flex gap-2 mt-4">
                 <input
                     className="border px-3 py-2 rounded"
@@ -38,7 +38,6 @@ interface Todo {
                     Добавить
                 </button>
             </form>
-
             <ul className="mt-6 space-y-2">
                 {todoList!! && todoList.map(item =>(
                     <li key={item.id} className={`flex justify-between p-2 border rounded 'bg-white'}`}>
