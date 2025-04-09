@@ -26,6 +26,7 @@ const LoginModal: React.FC<LoginModalProps>= ({isOpen, onClose}) =>{
         setPassword("");
         setError("");
     },[isOpen])
+    
     if (!isOpen) return null;
 
     return (
