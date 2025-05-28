@@ -39,14 +39,14 @@ const EditBookmark = ({isOpen, onClose, bookmarkId}: Props) =>{
             className="border px-3 py-2 rounded"
             value={newNameMark}
             onChange={e => setNewNameMark(e.target.value)}
-            placeholder="New name for bookmark"
+            placeholder="Rename bookmark"
           />
-              <button className="bg-blue-600 text-white px-4 py-2 rounded" type="submit"    onClick={handleSubmit}>
-              Accept
-              </button>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded" type="submit"    onClick={handleSubmit}>
+                Accept
+                </button>
           </form>
           <div >
-            <button onClick={bookmarkcount > 1 ? () => SetModalOpen(true): () => setError(true)} className="flex  items-center py-4">
+            <button onClick={bookmarkcount > 1 ? () => SetModalOpen(true): () => setError(true)} className="flex  items-center pt-8">
             <Trash2 />
                 <a href={'#'} className="text-blue ml-2">Delete Bookmark</a>
             </button>

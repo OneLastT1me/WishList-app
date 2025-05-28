@@ -29,9 +29,7 @@ const todoSlice  = createSlice({
         renameMark(state, action:PayloadAction<{bookmarkId: number, text: string}>){
             const {bookmarkId , text } = action.payload
             const targetBookmark = state.bookmarks.find(item =>  item.id === bookmarkId)
-
             if(targetBookmark) targetBookmark.label = text
-
         },
 
         addBookMark(state, action:PayloadAction<string>){
@@ -49,13 +47,14 @@ const todoSlice  = createSlice({
 
         addTodo(state, action: PayloadAction<{bookmarkId: number, text: string, title: string}>){
             const { bookmarkId, text, title } = action.payload
-
             const newTodo: Todo ={
                 id: Date.now(),
                 title,
                 text
             }
+            
             const targetBookmark = state.bookmarks.find(item => item.id === bookmarkId)
+
             if (targetBookmark) {
                 if (!targetBookmark.todos) targetBookmark.todos = []
                 targetBookmark.todos.push(newTodo)

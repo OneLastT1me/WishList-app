@@ -1,7 +1,7 @@
-import { useState } from "react"
-import { useAppDispatch, useAppSelector } from "../../hooks"
-import { addTodo, removeTodo } from "../../appStore/todoSlice"
-import { Cog } from 'lucide-react';
+import { useEffect, useState } from "react"
+import { useAppDispatch } from "../../hooks"
+import { removeTodo } from "../../appStore/todoSlice"
+import { Cog } from "lucide-react";
 import EditBookmark from "../modals/editBookmark";
 import AddTodoModal from "../modals/addTodo";
 
@@ -20,8 +20,28 @@ interface Todo {
     const [modalEditMark, setModalEditMark] = useState(false)
     const [modalAddTodo, setModalAddTodo] = useState(false)
     const [opentodo, setOpenModal] = useState<number | null>(null)
+    const [sortAsc, setSortAsc] = useState<boolean>()
+    const [dataTodo, setDataTodo] = useState<Todo[]>(todoList!)
     const dispatch = useAppDispatch()
 
+    const SortList = (sortAsc: boolean) => {
+        if(sortAsc) {
+            setSortAsc(false)
+            const sortedList = [...todoList!].sort((a, b) => a.title.localeCompare(b.title));
+            setDataTodo(sortedList);
+            return sortedList;
+        } else {
+            setSortAsc(true)
+            const sortedList = [...todoList!].sort((a, b) => b.title.localeCompare(a.title));
+            setDataTodo(sortedList);
+            return sortedList;
+        }
+    }
+    
+    useEffect(() =>{
+        setDataTodo(todoList!)
+    },[todoList])
+ 
     return (
         <div className='h-[calc(100vh-150px)] max-h-[700px] bg-white/5 border border-gray-700 px-6 py-4 rounded-lg shadow-md overflow-y-auto'>
             <div className='flex justify-between'>
@@ -33,7 +53,13 @@ interface Todo {
                     </button>
             </div>
             <ul className="mt-6 space-y-2">
-                {todoList!! && todoList.map(item =>(
+                <button
+                    onClick={() => SortList(sortAsc!!)}
+                    className='mb-4 bg-gray-700 text-white px-4 py-1 rounded hover:bg-gray-600'
+                >
+                    Сортировать по {sortAsc ? 'убыванию' : 'возрастанию'}
+                </button>
+                {dataTodo!! && dataTodo.map(item =>(
                     <li key={item.id} className='flex justify-between p-2 border border-indigo-500/100 rounded'>
                         <div onClick={() => setOpenModal(item.id)} className={`overflow-hidden flex-initial w-full cursor-pointer translate-all duration-500 ease-in-out  ${(item.id === opentodo && item.text!!) ? 'h-full' : 'h-[30px]'} `}>
                             <h2 className='font-semibold pb-[8px]'>{item.title}<br/></h2>
