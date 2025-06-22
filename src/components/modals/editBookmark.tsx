@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { removeBookMark, renameMark } from "../../appStore/todoSlice";
 import { Trash2 } from 'lucide-react';
+import ModalWrapper from "./modalWrapper";
 
 type Props = {
     bookmarkId: number
@@ -16,8 +17,7 @@ const EditBookmark = ({isOpen, onClose, bookmarkId}: Props) =>{
     const bookmarkcount = useAppSelector(state => state.todo.bookmarks.length)
     const dispatch = useAppDispatch()
 
-    const handleSubmit = (e:  React.FormEvent) =>{
-        e.preventDefault()
+    const handleSubmit = () =>{
         if(newNameMark){
             dispatch(renameMark({bookmarkId: bookmarkId, text: newNameMark}))
             setNewNameMark('')
@@ -28,35 +28,29 @@ const EditBookmark = ({isOpen, onClose, bookmarkId}: Props) =>{
     if(!isOpen) return null
 
     return(
-        <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+        <ModalWrapper
+            title='edit bookmark'
+            onAltClick={handleSubmit}
+            onClose={() =>(onClose(), setError(false))}
+            textButton='accept'    
         >
-        <div
-          className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full"
-        >
-          <form  className="flex gap-4">
-          <input
-            className="border px-3 py-2 rounded"
-            value={newNameMark}
-            onChange={e => setNewNameMark(e.target.value)}
-            placeholder="Rename bookmark"
-          />
-                <button className="bg-blue-600 text-white px-4 py-2 rounded" type="submit"    onClick={handleSubmit}>
-                Accept
+            <h3>Rename bookmark:</h3>
+            <input
+                className="border px-3 py-2 rounded"
+                value={newNameMark}
+                onChange={e => setNewNameMark(e.target.value)}
+            />
+            <div>
+                <button onClick={bookmarkcount > 1 ? () => SetModalOpen(true): () => setError(true)} className="flex  items-center pt-8">
+                <Trash2 />
+                    <a href={'#'} className="text-blue ml-2">Delete Bookmark</a>
                 </button>
-          </form>
-          <div >
-            <button onClick={bookmarkcount > 1 ? () => SetModalOpen(true): () => setError(true)} className="flex  items-center pt-8">
-            <Trash2 />
-                <a href={'#'} className="text-blue ml-2">Delete Bookmark</a>
-            </button>
                 {
                     error && <span className="text-red-500 text-sm">You can`t delete last bookmark</span>
                 }
-          </div>
-        </div>
-        <AcceptModal bookmarkId={bookmarkId} isOpen={modalOpen} onClose={() => (SetModalOpen(false), onClose())}/>
-      </div>
+            </div>
+            <AcceptModal bookmarkId={bookmarkId} isOpen={modalOpen} onClose={() => (SetModalOpen(false), onClose())}/>
+        </ModalWrapper>
   )
     
 }
