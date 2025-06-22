@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "../../hooks"
 import TodoList from "./todoList"
 import { addBookMark } from "../../appStore/todoSlice"
 
-
 type Props = {
     isOpen: boolean;
     onClose: () => void;
@@ -42,12 +41,14 @@ useEffect(() => {
                     `}
                         onClick={() => handleSubmit(group.label, group.id)}
                     >
-                    {group.label}
+                        {group.label}
                     </li>
                     ))}
-                    <li className={'px-3 py-1.5 rounded-t-md text-lg font-semibold cursor-pointer bg-gray-800 text-gray-400 hover:bg-gray-700'}
-                        onClick={() => setOpenModal(true)}>
-                    +
+                    <li 
+                        className={'px-3 py-1.5 rounded-t-md text-lg font-semibold cursor-pointer bg-gray-800 text-gray-400 hover:bg-gray-700'}
+                        onClick={() => setOpenModal(true)}
+                    >
+                        +
                     </li>
             </ul>
             <TodoList 
@@ -77,19 +78,21 @@ const ModalEditLabel  = ({isOpen, onClose}: Props) => {
     if (!isOpen) return null;
 
     return(
-          <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+        <div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+            onClick={onClose}
         >
-          <div
-            className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full"
-          >
+            <div
+                className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full"
+                onClick={(e) => e.stopPropagation()}
+            >
             <form  className="flex">
-            <input
-              className="border px-3 py-2 rounded"
-              value={bookmark}
-              onChange={e => setBookmark(e.target.value)}
-              placeholder="add new bookmark"
-            />
+                <input
+                    className="border px-3 py-2 rounded"
+                    value={bookmark}
+                    onChange={e => setBookmark(e.target.value)}
+                    placeholder="add new bookmark"
+                />
                 <button className="bg-blue-600 text-white px-4 py-2 rounded" type="submit" onClick={handleSubmit}>
                     Add
                 </button>

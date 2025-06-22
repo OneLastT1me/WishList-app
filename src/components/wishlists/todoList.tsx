@@ -66,7 +66,7 @@ interface Todo {
                             <p className='whitespace-pre-wrap text-gray-700'>{item.text}</p>
                         </div>
                         <button
-                             onClick={() => dispatch(removeTodo({bookmarkId: bookmarkId, todoId: item.id}))}
+                            onClick={() => dispatch(removeTodo({bookmarkId: bookmarkId, todoId: item.id}))}
                             className='text-red-500 hover:underline h-[20px]'
                         >
                             ✕
