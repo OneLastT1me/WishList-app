@@ -3,8 +3,8 @@ type Props = {
     title: string
     children: React.ReactNode
     textButton: string
-    onClose: () => void
-    onAltClick: () => void 
+    onClose?: () => void
+    onAltClick?: () => void 
 }
 
 const ModalWrapper: React.FC<Props> = ({title, children, onClose, textButton, onAltClick}) =>{
@@ -18,7 +18,7 @@ const ModalWrapper: React.FC<Props> = ({title, children, onClose, textButton, on
             className="bg-white rounded-xl shadow-lg w-[90%] max-w-md p-6"
             onClick={(e) => e.stopPropagation()}
         >
-            <h2 className="text-xl font-semibold mb-4 text-center">{title}</h2>
+            <h2 className="text-xl  mb-4 text-center text-black">{title}</h2>
                 {children}
             <div className="flex justify-end gap-2">
                 <button
