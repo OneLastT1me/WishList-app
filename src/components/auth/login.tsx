@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import ModalWrapper from "../modals/modalWrapper";
-import AuthUser from "./AuthUser";
+import { useNavigate } from "react-router-dom";
+import { setUser } from "../../appStore/authSlice";
+import { useAppDispatch } from "../../hooks";
+import { supabase } from "../../helper";
+
 interface modalProps {
     isOpen: boolean
     onClose: () => void;
@@ -10,18 +14,36 @@ interface modalProps {
 const LogInModal = ({isOpen, onClose, onSwitchToRegister}: modalProps) =>{
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [modalAuthUser, setModalAuth] = useState<null | 'login' | 'register'>(null)
     const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+    const dispatch = useAppDispatch();
   
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-      if (email === "user@example.com" && password === "password123") {
-        console.log("Авторизация успешна!");
-        setError("");
-        onClose(); 
-      } else {
-        setError("Неверные учетные данные. Попробуйте снова.");
+    const handleSubmit = async  (email: string, password: string, e: React.FormEvent) => {
+      e.preventDefault();
+      setError("");
+      
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        setError(error.message);
+        return;
       }
-    };
+      if (data.user) {
+        dispatch(setUser(data.session.user));
+        navigate('/WishList');
+        onClose();
+        console.log("Login successful", data.user);
+      } else {
+        setError("Login failed. Please try again.");
+      }
+      setEmail("");
+      setPassword("");
+    }
 
     useEffect(()=>{
         setEmail("");
@@ -35,37 +57,38 @@ const LogInModal = ({isOpen, onClose, onSwitchToRegister}: modalProps) =>{
       <ModalWrapper
         title='login'
         onClose={onClose}
-        onAltClick={onClose}
+        onAltClick={() => handleSubmit(email, password, new Event('submit') as unknown as React.FormEvent)}
         textButton='accept'
       >
+          <form onSubmit={(e) => handleSubmit(email, password, e)} className="p-6 bg-white rounded-lg shadow-md">
+            {error && (
+              <div className="mb-4 text-red-600">
+                {error}
+              </div>
+            )}
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 mb-2">
-              Email
-            </label>
             <input
-              className="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)} />
-          </div>
-
-          <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 mb-2">
-              Password
-            </label>
-            <input
-              className="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)} />
-            {
-              error && <p>error</p>
-            }
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                        type="email"
+                        placeholder="Email"
+                        className="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 mb-2"
+                    />
+                <input
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
+                        type="password"
+                        placeholder="Password"
+                        className="w-full px-4 py-2 border rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 mb-2"
+                    />
             <h3
               onClick={onSwitchToRegister}
               className="mt-10 text-sm text-blue-600 hover:text-blue-800 hover:underline cursor-pointer transition duration-200"
             >
                 Don’t have an account? Register
             </h3>
-            </div>             
+            </div>
+            </form>             
       </ModalWrapper>
       );
 }

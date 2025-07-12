@@ -1,8 +1,40 @@
 import { Outlet, Route, Routes } from 'react-router-dom'
-import Menu from './components/header/menu'
+import Menu from './components/header'
 import Bookmarks from './components/wishlists/bookmarks'
+import AuthProtectedRoute from './components/authProtectedRoute'
+import { useEffect } from "react";
+import { supabase } from './helper';
+import { setUser, logout } from './appStore/authSlice';
+import { useAppDispatch } from './hooks';
 
 function App() {
+   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (data.session?.user) {
+        dispatch(setUser(data.session.user)); // сохраняем юзера
+      } else {
+        dispatch(logout());
+      }
+    };
+
+    getSession();
+
+    // Подписываемся на изменения сессии (логин/логаут)
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        dispatch(setUser(session.user));
+      } else {
+        dispatch(logout());
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [dispatch]);
 
   const Layout = () => (
     <>
@@ -14,7 +46,12 @@ function App() {
 return (
     <Routes>
         <Route path='/' element={<Layout />} >
-            <Route path='/WishList' element={<Bookmarks />} />
+            <Route path='/home' element={<div>Home</div>} />
+            <Route path='/WishList' element={
+                <AuthProtectedRoute>
+                    <Bookmarks />
+                </AuthProtectedRoute>
+            } />
         </Route >
     </Routes>
 )
