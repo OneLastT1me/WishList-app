@@ -4,6 +4,7 @@ import { removeTodo } from "../../appStore/todoSlice"
 import { Cog } from "lucide-react";
 import EditBookmark from "../modals/editBookmark";
 import AddTodoModal from "../modals/addTodo";
+import useDeleteTodo from "../../hooks/TodoList/useDeleteTodo";
 
 interface Todo {
     id: number
@@ -23,6 +24,7 @@ interface Todo {
     const [sortAsc, setSortAsc] = useState<boolean>()
     const [dataTodo, setDataTodo] = useState<Todo[]>(todoList!)
     const dispatch = useAppDispatch()
+    const {getDeleteTodo} = useDeleteTodo()
 
     const SortList = (sortAsc: boolean) => {
         if(sortAsc) {
@@ -66,7 +68,10 @@ interface Todo {
                             <p className='whitespace-pre-wrap text-gray-700'>{item.text}</p>
                         </div>
                         <button
-                            onClick={() => dispatch(removeTodo({bookmarkId: bookmarkId, todoId: item.id}))}
+                            onClick={() => (
+                                dispatch(removeTodo({bookmarkId: bookmarkId, todoId: item.id}),
+                                getDeleteTodo(bookmarkId, item.id)
+                                ))}
                             className='text-red-500 hover:underline h-[20px]'
                         >
                             ✕

@@ -12,7 +12,6 @@ export interface Todo {
     text: string
 }[]
 
-  
 interface BookMarksState {
     bookmarks: Bookmark[]
   }
@@ -26,19 +25,18 @@ const todoSlice  = createSlice({
     initialState,
     reducers: {
 
+        setBookmarks(state, action: PayloadAction<Bookmark[]>) {
+            state.bookmarks = action.payload;
+        },
+
         renameMark(state, action:PayloadAction<{bookmarkId: number, text: string}>){
             const {bookmarkId , text } = action.payload
             const targetBookmark = state.bookmarks.find(item =>  item.id === bookmarkId)
             if(targetBookmark) targetBookmark.label = text
         },
 
-        addBookMark(state, action:PayloadAction<string>){
-            const newBookmark: Bookmark = {
-                id: Date.now(),
-                label: action.payload,
-                todos: []
-            }
-            state.bookmarks.push(newBookmark)
+        addBookMark(state, action: PayloadAction<Bookmark>) {
+            state.bookmarks.push(action.payload)
         },
 
         removeBookMark(state, action: PayloadAction<number>){
@@ -65,10 +63,18 @@ const todoSlice  = createSlice({
             const { bookmarkId, todoId } = action.payload
             const targetBookmark = state.bookmarks.find(item => item.id === bookmarkId)
             if(targetBookmark && targetBookmark.todos) targetBookmark.todos = targetBookmark.todos.filter(todo => todo.id !== todoId)
-        }
+        },
+
+        updateTodosInBookmark(state, action: PayloadAction<{bookmarkId: number, todos: Todo[]}>) {
+            const { bookmarkId, todos } = action.payload;
+            const targetBookmark = state.bookmarks.find(b => b.id === bookmarkId);
+            if (targetBookmark) {
+                targetBookmark.todos = todos;
+            }
+        },
         
     }
 })
 
-export const {addBookMark, removeBookMark, addTodo , removeTodo, renameMark} = todoSlice.actions
+export const {setBookmarks, addBookMark, removeBookMark, addTodo , removeTodo, renameMark, updateTodosInBookmark} = todoSlice.actions
 export default todoSlice.reducer

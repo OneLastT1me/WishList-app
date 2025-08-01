@@ -14,7 +14,7 @@ function App() {
     const getSession = async () => {
       const { data, error } = await supabase.auth.getSession();
       if (data.session?.user) {
-        dispatch(setUser(data.session.user)); // сохраняем юзера
+        dispatch(setUser(data.session.user)); 
       } else {
         dispatch(logout());
       }
@@ -22,7 +22,6 @@ function App() {
 
     getSession();
 
-    // Подписываемся на изменения сессии (логин/логаут)
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         dispatch(setUser(session.user));

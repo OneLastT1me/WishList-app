@@ -2,6 +2,7 @@ import { useState } from "react";
 import { addTodo } from "../../appStore/todoSlice";
 import { useAppDispatch } from "../../hooks";
 import ModalWrapper from "./modalWrapper";
+import useAddTodo from "../../hooks/TodoList/useAddTodo";
 
 type Props = {
     bookmarkId: number
@@ -13,12 +14,14 @@ const AddTodoModal = ({bookmarkId, isOpen ,onClose}:Props) =>{
     const dispatch = useAppDispatch()
     const [title, setTitle] = useState('')
     const [text, setText] =useState('')
+    const {getAddTodo} = useAddTodo()
 
     if (!isOpen) return null
 
     const handleSubmit = () => {
         if (title) {
             dispatch(addTodo({bookmarkId: bookmarkId, text: text, title: title}))
+            getAddTodo(bookmarkId, title, text)
             setTitle('')
             setText('')
             onClose()
@@ -46,6 +49,7 @@ const AddTodoModal = ({bookmarkId, isOpen ,onClose}:Props) =>{
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   placeholder="double information about this todo"
+                  maxLength={200}
               />
       </ModalWrapper>
     )

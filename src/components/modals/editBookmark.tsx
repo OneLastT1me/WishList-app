@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { removeBookMark, renameMark } from "../../appStore/todoSlice";
 import { Trash2 } from 'lucide-react';
 import ModalWrapper from "./modalWrapper";
+import useRenameBoomark from "../../hooks/Bookmark/useRenameBookmark";
+import useDeleteBookmark from "../../hooks/Bookmark/useDeleteBookmark";
 
 type Props = {
     bookmarkId: number
@@ -16,10 +18,13 @@ const EditBookmark = ({isOpen, onClose, bookmarkId}: Props) =>{
     const [error, setError] = useState(false)
     const bookmarkcount = useAppSelector(state => state.todo.bookmarks.length)
     const dispatch = useAppDispatch()
+    const {renameBookmark} = useRenameBoomark()
 
+    
     const handleSubmit = () =>{
         if(newNameMark){
             dispatch(renameMark({bookmarkId: bookmarkId, text: newNameMark}))
+            renameBookmark(bookmarkId, newNameMark)
             setNewNameMark('')
             onClose()
         }
@@ -57,6 +62,7 @@ const EditBookmark = ({isOpen, onClose, bookmarkId}: Props) =>{
 
 
 const AcceptModal = ({bookmarkId ,isOpen, onClose,}: Props) =>{
+    const { deleteBookmark } = useDeleteBookmark()
     const dispatch = useAppDispatch()
 
     if(!isOpen) return null
@@ -64,12 +70,12 @@ const AcceptModal = ({bookmarkId ,isOpen, onClose,}: Props) =>{
     return(
         <div
             className="fixed flex items-center justify-center bg-opacity-50 z-50"
-            onChange={() => onClose()}
+            onClick={() => (dispatch(removeBookMark(bookmarkId)), onClose())}
         >
             <div
                 className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full"
             >
-            <button className="bg-blue-600 text-white px-4 py-2 rounded mx-4" type="submit" onClick={() => (dispatch(removeBookMark(bookmarkId)),  onClose())}>
+            <button className="bg-blue-600 text-white px-4 py-2 rounded mx-4" type="submit" onClick={() => (deleteBookmark(bookmarkId),dispatch(removeBookMark(bookmarkId)),  onClose())}>
                 Delete
             </button>
             <button className="bg-White text-blue-600 px-4 py-2 rounded mx-4 " type="submit" onClick={() => onClose()}>

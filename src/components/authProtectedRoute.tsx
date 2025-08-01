@@ -10,7 +10,6 @@ type AuthProtectedRouteProps = {
 const AuthProtectedRoute = ({ children }: AuthProtectedRouteProps): React.ReactElement => {
     const [modalOpen, setModalOpen] = useState<null | 'login' | 'register'>('login')
     const user = useAppSelector(state => state.auth.user);
-    console.log( 'AuthProtectedRoute user:', user);
 
     if (!user) {
         return (
