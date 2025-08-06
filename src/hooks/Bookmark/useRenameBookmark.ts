@@ -10,7 +10,7 @@ const useRenameBoomark = () => {
 
         const { error } = await supabase.auth.updateUser({data: {bookmarks}})
 
-        if(error) console.error('updata rename: ' , error)        
+        if(error) return error  
     }
 
     return {renameBookmark}

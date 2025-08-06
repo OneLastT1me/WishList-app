@@ -1,5 +1,6 @@
 import { Bookmark } from "../../appStore/todoSlice"
 import { supabase } from "../../helper"
+import { toast } from "react-toastify";
 
 const useAddBookmarks = () => {
 
@@ -12,7 +13,6 @@ const useAddBookmarks = () => {
             return
         }
 
-
         if(bookmark){
             const currentBookmarks: Bookmark [] = Array.isArray(data.user?.user_metadata.bookmarks) ? data.user.user_metadata.bookmarks : []
 
@@ -21,17 +21,10 @@ const useAddBookmarks = () => {
             const {error} = await supabase.auth.updateUser({
                 data: { bookmarks: updataBookmarks} 
             })
-            if(error){
-                console.error('error with updata',error)
-                return
-            }
+            if(error) toast.error('som')
         }
   
-      if (error) {
-        console.error("error:", error)
-      }else {
-        console.log("Bookmark add in Supabase");
-      }
+
     }
   
     return { addBookmark }

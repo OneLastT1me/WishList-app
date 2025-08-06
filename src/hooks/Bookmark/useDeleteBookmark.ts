@@ -10,10 +10,7 @@ const useDeleteBookmark = () => {
 
         const { error } = await supabase.auth.updateUser({data: {bookmarks: updataBookmarks}})
 
-        if(error){
-            console.error("delete error:", error.message)
-        }
-        
+        if(error) return error || null
     }
 
     return {deleteBookmark}

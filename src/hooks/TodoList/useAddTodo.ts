@@ -1,6 +1,5 @@
 import { supabase } from "../../helper"
-
-
+import { toast } from "react-toastify";
 
 const useAddTodo = () =>{
     const getAddTodo = async (bookmarkId: number, title: string, text?: string) =>{
@@ -27,9 +26,12 @@ const useAddTodo = () =>{
 
               const {error} = await supabase.auth.updateUser({data: {bookmarks: updatedBookmarks}})
 
-              if(error) console.error('error add todo :' , error)
-        } 
-        
+              if(error){
+                toast.error('Error in adding Task')
+              }else{
+                toast.success('Task added successfully')
+              }
+            } 
        
     }  
 return {getAddTodo}
