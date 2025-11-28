@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { supabase } from './helper';
 import { setUser, logout } from './appStore/authSlice';
 import { useAppDispatch } from './hooks';
+import Main from './components/main/main';
 
 function App() {
    const dispatch = useAppDispatch();
@@ -38,6 +39,7 @@ function App() {
   const Layout = () => (
     <>
         <Menu/>
+        <Main />
         <Outlet />
     </>
 )
