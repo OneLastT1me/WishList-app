@@ -9,7 +9,7 @@ import { useAppDispatch } from './hooks';
 import Main from './components/main/main';
 
 function App() {
-   const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const getSession = async () => {

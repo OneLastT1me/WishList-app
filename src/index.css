@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  
+    scrollbar-width: none;     
+  }
+}
+
+:root {
+  --card-mist-gray: #F3F4F6;
+  --card-soft-sand: #F7E9D7;
+  --card-ice-blue: #E8F3FF;
+  --card-mint-breeze: #E7F7F0;
+  --card-blush-rose: #FDECEF;
+
+  --text-dark: #1F2937;
+  --text-blue-dark: #18324A;
+  --text-green-dark: #134E4A;
+  --text-rose-dark: #4A1D2A;
+
+  --border-subtle: rgba(17, 24, 39, 0.08);
+  --shadow-soft: 0 1px 2px rgba(17,24,39,0.06), 0 4px 12px rgba(17,24,39,0.08);
+}
