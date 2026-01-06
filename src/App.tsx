@@ -39,7 +39,6 @@ function App() {
   const Layout = () => (
     <>
         <Menu/>
-        <Main />
         <Outlet />
     </>
 )
@@ -47,7 +46,7 @@ function App() {
 return (
     <Routes>
         <Route path='/' element={<Layout />} >
-            <Route path='/home' element={<div>Home</div>} />
+            <Route index element={<Main />} />
             <Route path='/WishList' element={
                 <AuthProtectedRoute>
                     <Bookmarks />
