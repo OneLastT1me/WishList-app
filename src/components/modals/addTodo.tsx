@@ -18,10 +18,12 @@ const AddTodoModal = ({bookmarkId, isOpen ,onClose}:Props) =>{
 
     if (!isOpen) return null
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (title) {
-            dispatch(addTodo({bookmarkId: bookmarkId, text: text, title: title}))
-            getAddTodo(bookmarkId, title, text)
+            const error  = await getAddTodo(bookmarkId, title, text)
+            if(!error){
+              dispatch(addTodo({bookmarkId: bookmarkId, text: text, title: title}))
+            }
             setTitle('')
             setText('')
             onClose()
@@ -30,27 +32,28 @@ const AddTodoModal = ({bookmarkId, isOpen ,onClose}:Props) =>{
 
     return (
       <ModalWrapper
-        title='Add Task'
-        onClose={() => (onClose(), setTitle(''), setText(''))}
-        textButton='accept'
-        onAltClick={handleSubmit}       
+          title='Add Task'
+          onClose={() => (onClose(), setTitle(''), setText(''))}
+          textButton='accept'
+          onAltClick={handleSubmit}       
       >
-              <h3>Title:</h3>
-              <input
-                  className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400"
-                  type="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="add new name"
-              />
-              <h3>Discription:</h3>
-              <textarea
-                  className="w-full min-h-[100px] border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none placeholder-gray-400 text-sm"
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="double information about this todo"
-                  maxLength={200}
-              />
+          <h3>Title:</h3>
+          <input
+              className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+              type="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="add new name"
+          />
+          <h3>Discription:</h3>
+          <textarea
+              className="w-full min-h-[100px] border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none placeholder-gray-400 text-sm"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="double information about this todo"
+              maxLength={200}
+          />
+
       </ModalWrapper>
     )
 }

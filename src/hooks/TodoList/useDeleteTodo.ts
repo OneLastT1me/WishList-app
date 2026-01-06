@@ -1,4 +1,5 @@
 import { supabase } from "../../helper"
+import { toast } from "react-toastify";
 
 const useDeleteTodo = () =>{
     const getDeleteTodo = async (bookmarkId: number, todoId: number) =>{
@@ -17,7 +18,11 @@ const useDeleteTodo = () =>{
 
               const {error} = await supabase.auth.updateUser({data: {bookmarks: updatedBookmarks}})
 
-              if(error) console.error('error remove todo:' , error)
+              if(error){
+                toast.error('error in remove Task')
+              }else{
+                toast.success('Task deleted')
+              }
         }
 
     }
