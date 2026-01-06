@@ -51,7 +51,7 @@ const RegisterModal = ({isOpen, onClose, onSwitchToRegister}: modalProps) => {
             onClose={onClose}
             onAltClick={() => handleSubmit(new Event('submit') as unknown as React.FormEvent) }
         >
-            <form onSubmit={handleSubmit} className="p-6 bg-white rounded-lg shadow-md">
+            <form onSubmit={handleSubmit} className="p-6 mb-3 bg-white rounded-lg shadow-md">
                 {error && (
                     <div className="mb-4 text-red-600">
                         {error}
