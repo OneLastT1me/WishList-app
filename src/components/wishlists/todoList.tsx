@@ -5,6 +5,7 @@ import { Cog } from "lucide-react";
 import EditBookmark from "../modals/editBookmark";
 import AddTodoModal from "../modals/addTodo";
 import useDeleteTodo from "../../hooks/TodoList/useDeleteTodo";
+import CloseIcon from '@mui/icons-material/Close';
 
 interface Todo {
     id: number
@@ -74,7 +75,7 @@ interface Todo {
                                 ))}
                             className='text-red-500 hover:underline h-[20px]'
                         >
-                            ✕
+                            <CloseIcon />
                         </button>
                     </li>
                 ))}
